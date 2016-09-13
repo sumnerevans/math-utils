@@ -10,7 +10,7 @@ import sys
 
 def print_matrix(matrix):
     for row in matrix:
-        print('|' + ' '.join([str(x) for x in row]) + '|')
+        print('|' + ' '.join([str(round(x, 5)) for x in row]) + '|')
 
 def validate_matrix(matrix):
     if len(matrix) == 0:
