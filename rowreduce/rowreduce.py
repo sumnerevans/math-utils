@@ -31,9 +31,9 @@ def rowreduce(matrix, start_y = 0, start_x = 0):
 
             break
 
-    if not pivot_found and start_x < len(matrix[0]):
+    if not pivot_found and start_x < len(matrix[0]) - 1:
         rowreduce(matrix, start_y, start_x + 1)
-    elif start_y < len(matrix):
+    elif start_y < len(matrix) - 1:
         rowreduce(matrix, start_y + 1)
 
     if not pivot_found: return

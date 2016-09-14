@@ -6,6 +6,8 @@
 #
 # Distributed under terms of the MIT license.
 
+from fractions import Fraction
+
 class Matrix:
     def __init__(self, data=None):
         self.data = data
@@ -37,11 +39,11 @@ class Matrix:
         self.data[r1], self.data[r2] = self.data[r2], self.data[r1]
 
     def scale(self, r1, scale):
-        self.data[r1] = [scale * c for c in self.data[r1]]
+        self.data[r1] = [Fraction(scale * c) for c in self.data[r1]]
 
     # (scale)R1 + R2 -> R2
     def replace(self, scale, r1, r2):
-        self.data[r2] = [(scale * c) + self.data[r2][i] for i, c in enumerate(self.data[r1])]
+        self.data[r2] = [Fraction((scale * c) + self.data[r2][i]) for i, c in enumerate(self.data[r1])]
 
     def prompt_for_matrix(self, prompt_text):
         requires_entry = True
@@ -58,7 +60,7 @@ class Matrix:
                 if len(row) == 0: continue
 
                 # Add and populate the row
-                self.data.append([int(x) for x in row.split()])
+                self.data.append([Fraction(x) for x in row.split()])
 
                 i += 1
 
