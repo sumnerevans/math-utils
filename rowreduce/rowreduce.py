@@ -7,57 +7,7 @@
 # Distributed under terms of the MIT license.
 
 import sys
-
-def print_matrix(matrix):
-    for row in matrix:
-        print('|' + ' '.join([str(round(x, 5)) for x in row]) + '|')
-
-def validate_matrix(matrix):
-    if len(matrix) == 0:
-        return False
-
-    n = len(matrix[0])
-    for row in matrix:
-        if len(row) != n:
-            return False
-
-    return True
-
-def get_matrix():
-    requires_entry = True
-    while requires_entry:
-        print('\nType each row of your matrix, separating the entries with a space. When you are ' +
-                'finished entering your matrix, type "done".')
-
-        matrix = []
-        i = 0
-        while True:
-            row = input().strip()
-
-            if row.lower() == 'done':
-                break
-
-            if len(row) == 0:
-                continuesum
-
-            # Add and populate the row
-            matrix.append([int(x) for x in row.split()])
-
-            i += 1
-
-        requires_entry = not validate_matrix(matrix)
-
-    return matrix
-
-def interchange(matrix, r1, r2):
-    matrix[r1], matrix[r2] = matrix[r2], matrix[r1]
-
-def scale_matrix(matrix, r1, scale):
-    matrix[r1] = [scale * c for c in matrix[r1]]
-
-# (scale)R1 + R2 -> R2
-def replace(matrix, scale, r1, r2):
-    matrix[r2] = [(scale * c) + matrix[r2][i] for i, c in enumerate(matrix[r1])]
+from matrix import Matrix
 
 def rowreduce(matrix, start_y = 0, start_x = 0):
     pivot_found = False
@@ -69,7 +19,7 @@ def rowreduce(matrix, start_y = 0, start_x = 0):
 
             # If this isn't the top already, move it to the top
             if i != start_y:
-                interchange(matrix, i, start_y)
+                matrix.interchange(i, start_y)
 
             # Make everything under the pivot a zero
             for (j, row) in enumerate(matrix):
@@ -77,7 +27,7 @@ def rowreduce(matrix, start_y = 0, start_x = 0):
 
                 if row[start_x] != 0:
                     scale = - (row[start_x] / matrix[start_y][start_x])
-                    replace(matrix, scale, start_x, j)
+                    matrix.replace(scale, start_x, j)
 
             break
 
@@ -89,19 +39,22 @@ def rowreduce(matrix, start_y = 0, start_x = 0):
     if not pivot_found: return
 
     # Pivot Was Found
-    scale_matrix(matrix, start_y, 1 / matrix[start_y][start_x])
+    matrix.scale(start_y, 1 / matrix[start_y][start_x])
 
     for (j, row) in enumerate(matrix):
         if j == start_y: return
 
         if row[start_x]:
             scale = -(row[start_x] / matrix[start_y][start_x])
-            replace(matrix, scale, start_x, j)
+            matrix.replace(scale, start_x, j)
 
 print('Welcome to rowreduce')
 
-matrix = get_matrix()
+matrix = Matrix()
+
+matrix.prompt_for_matrix('Type each row of your matrix, separating the entries with a space. ' +
+        'When you are finished entering your matrix, type "done".')
 
 rowreduce(matrix)
 
-print_matrix(matrix)
+matrix.print()
