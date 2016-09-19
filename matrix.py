@@ -35,6 +35,9 @@ class Matrix:
 
         return True
 
+    def is_square(self):
+        return len(self.data) == len(self.data[0])
+
     def interchange(self, r1, r2):
         self.data[r1], self.data[r2] = self.data[r2], self.data[r1]
 
@@ -45,7 +48,7 @@ class Matrix:
     def replace(self, scale, r1, r2):
         self.data[r2] = [Fraction((scale * c) + self.data[r2][i]) for i, c in enumerate(self.data[r1])]
 
-    def prompt_for_matrix(self, prompt_text):
+    def prompt_for_matrix(self, prompt_text, requires_square=False):
         requires_entry = True
         while requires_entry:
             print('\n%s' % prompt_text)
@@ -64,4 +67,4 @@ class Matrix:
 
                 i += 1
 
-            requires_entry = not self.validate()
+            requires_entry = not self.validate() or (requires_square and not self.is_square())
