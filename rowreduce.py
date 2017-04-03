@@ -21,6 +21,9 @@ def rowreduce(matrix, start_y = 0, start_x = 0):
             if i != start_y:
                 matrix.interchange(i, start_y)
 
+            matrix.print()
+            print()
+
             # Make everything under the pivot a zero
             for (j, row) in enumerate(matrix):
                 if j <= start_y: continue
@@ -28,6 +31,9 @@ def rowreduce(matrix, start_y = 0, start_x = 0):
                 if row[start_x] != 0:
                     scale = - (row[start_x] / matrix[start_y][start_x])
                     matrix.replace(scale, start_x, j)
+
+            matrix.print()
+            print()
 
             break
 
@@ -39,7 +45,8 @@ def rowreduce(matrix, start_y = 0, start_x = 0):
     if not pivot_found: return
 
     # Pivot Was Found
-    matrix.scale(start_y, 1 / matrix[start_y][start_x])
+    if matrix[start_y][start_x] != 0:
+        matrix.scale(start_y, 1 / matrix[start_y][start_x])
 
     for (j, row) in enumerate(matrix):
         if j == start_y: return
@@ -47,6 +54,9 @@ def rowreduce(matrix, start_y = 0, start_x = 0):
         if row[start_x]:
             scale = -(row[start_x] / matrix[start_y][start_x])
             matrix.replace(scale, start_x, j)
+
+    matrix.print()
+    print()
 
 print('Welcome to rowreduce')
 
